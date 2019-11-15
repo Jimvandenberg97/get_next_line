@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_next_line.h                                    :+:    :+:            */
+/*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: jivan-de <jivan-de@student.codam.n>          +#+                     */
+/*   By: jivan-de <jivan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/11/12 12:30:53 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/14 17:30:17 by jivan-de      ########   odam.nl         */
+/*   Created: 2019/11/15 11:55:55 by jivan-de      #+#    #+#                 */
+/*   Updated: 2019/11/15 12:01:08 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFFER_SIZE 1
+#include "get_next_line.h"
+#include <stdio.h>
 
+int		main(int argv, int **argc)
+{
+	return
 
-#include <unistd.h>
-#include <limits.h>
-#include <stdlib.h>
-#include <stddef.h>
-
-int		get_next_line(int fd, char **line);
-char	*ft_strchr(const chr *s, int c);
-
-#endif
+	return (0);
+}
