@@ -6,12 +6,11 @@
 /*   By: jivan-de <jivan-de@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/12 12:30:33 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/15 13:11:03 by jivan-de      ########   odam.nl         */
+/*   Updated: 2019/11/19 16:44:20 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "libft.h"
 
 char	*ft_strchr(const char *s, int c)
 {
