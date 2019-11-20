@@ -6,7 +6,7 @@
 /*   By: jivan-de <jivan-de@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/12 12:29:44 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/19 16:58:43 by jivan-de      ########   odam.nl         */
+/*   Updated: 2019/11/20 14:51:23 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,52 +66,50 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
-static int	ft_readbuf(int fd, char **ptr)
+char	*readit(const int fd, char *str)
 {
-	char	*buf;
-	int		ret;
-	char	*new;
+	char	buf[BUFFER_SIZE + 1];
+	int		res;
 
-	buf = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
-	ret = read(fd, &buf[fd], BUFFER_SIZE);
-	if (ret > 0)
+	if (fd < 0 || read(fd, buf, 0) < 0 || BUFFER_SIZE < 1)
+		return (0);
+	if (str == NULL)
+		str = ft_strdup("");
+	while (!(ft_strchr(str, '\n')))
 	{
-		new = ft_strjoin(*ptr, &buf[fd]);
-		free(*ptr);
-		*ptr = new;
+		if ((res = read(fd, buf, BUFFER_SIZE)) < 0)
+			return (0);
+		buf[res] = '\0';
+		str = ft_strjoin(str, buf);
+		if (str[0] == '\0' || res == 0)
+			break ;
 	}
-	return (ret);
+	return (str);
 }
 
-int		get_next_line(int fd, char **line)
+int		get_next_line(const int fd, char **line)
 {
-	static char		*fd_store[INT_MAX];
-	int				result;
-	char			*endl;
+	static char *str;
+	t_line		magic;
 
-	if (!line)
+	if (!(str = readit(fd, str)) || !line)
 		return (-1);
-	endl = ft_strchr(fd_store[fd], '\n');
-	while (endl == NULL)
+	if ((magic.temp = ft_strchr(str, '\n')) > 0)
 	{
-		result = ft_readbuf(fd, &fd_store[fd]);
-		if (result == 0)
-		{
-			endl = ft_strchr(fd_store[fd], '\0');
-			if (endl == fd_store[fd])
-				return (0);
-		}
-		else if (result < 0)
+		magic.i = magic.temp - str;
+		if (!(*line = ft_substr(str, 0, magic.i)))
 			return (-1);
-		endl = ft_strchr(fd_store[fd], '\0');
-		if (endl == NULL)
-			endl = ft_strchr(fd_store[fd], '\n');
+		str = ft_strdup(magic.temp + 1);
+		return (1);
 	}
-	*line = ft_substr(fd_store[fd], 0, (endl - fd_store[fd]));
-	if (*line == NULL)
-		return (-1);
-	endl = ft_strdup(endl + 1);
-	free(fd_store[fd]);
-	fd_store[fd] = endl;
-	return (1);
+	else
+	{
+		if (!(*line = ft_strdup(str)))
+			return (-1);
+		free(str);
+		str = NULL;
+		if (*line[0] == '\0')
+			return (0);
+		return (1);
+	}
 }

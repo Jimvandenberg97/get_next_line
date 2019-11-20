@@ -6,7 +6,7 @@
 /*   By: jivan-de <jivan-de@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/12 12:30:33 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/19 16:44:20 by jivan-de      ########   odam.nl         */
+/*   Updated: 2019/11/19 17:11:17 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,17 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize)
 		dst[dstsize - 1] = '\0';
 	}
 	return (len);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char *p;
+
+	p = s;
+	while (n > 0)
+	{
+		*p = '\0';
+		p++;
+		n--;
+	}
 }
