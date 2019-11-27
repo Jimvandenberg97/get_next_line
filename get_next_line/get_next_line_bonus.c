@@ -6,11 +6,11 @@
 /*   By: jivan-de <jivan-de@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/12 12:29:44 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/22 14:00:39 by jivan-de      ########   odam.nl         */
+/*   Updated: 2019/11/27 15:08:13 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 size_t		ft_strlen(const	char *s)
 {
@@ -56,7 +56,7 @@ char		*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-static int	ft_read(const int fd, char *fd_store[fd])
+static int	ft_read(const int fd, char *fd_store[fd], int x)
 {
 	char	*buf;
 	char	*tmp;
@@ -66,21 +66,22 @@ static int	ft_read(const int fd, char *fd_store[fd])
 	if (!buf)
 		return (-1);
 	tmp_res = read(fd, buf, BUFFER_SIZE);
-	if (tmp_res > 0)
-	{
+	if (tmp_res >= 0 && x != -1)
 		buf[tmp_res] = '\0';
-		if (fd_store[fd] == NULL)
-			fd_store[fd] = ft_strdup(buf);
-		else
-		{
-			tmp = fd_store[fd];
-			fd_store[fd] = ft_strjoin(tmp, buf);
-			free(tmp);
-		}
+	if (fd_store[fd] == NULL && tmp_res > 0 && x != -1)
+		fd_store[fd] = ft_strdup(buf);
+	else if (tmp_res > 0 && x != -1)
+	{
+		tmp = fd_store[fd];
+		fd_store[fd] = ft_strjoin(tmp, buf);
+		free(tmp);
 	}
 	free(buf);
-	if (tmp_res == -1 && fd_store[fd])
+	if ((tmp_res == -1 && fd_store[fd]) || x == -1)
+	{
 		free(fd_store[fd]);
+		fd_store[fd] = NULL;
+	}
 	return (tmp_res);
 }
 
@@ -90,22 +91,25 @@ int			get_next_line(int fd, char **line)
 	char		*ptr_nl;
 	int			res;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (BUFFER_SIZE <= 0 || !line)
 		return (-1);
 	res = 1;
 	while (!ft_strchr(fd_store[fd], '\n') && res > 0)
-		res = ft_read(fd, fd_store);
+		res = ft_read(fd, fd_store, res);
 	if (res > 0)
 	{
 		ptr_nl = ft_strchr(fd_store[fd], '\n');
 		*line = ft_substr(fd_store[fd], 0, ptr_nl - fd_store[fd]);
 		fd_store[fd] = ft_strdup(ptr_nl + 1);
-		return (1);
+		if (*line == NULL)
+			res = ft_read(fd, fd_store, -1);
+		return ((*line == NULL || res < 0) ? -1 : 1);
 	}
 	else if (res == 0)
 	{
 		*line = ft_strdup(fd_store[fd]);
-		return (0);
+		free(fd_store[fd]);
+		fd_store[fd] = NULL;
 	}
-	return (-1);
+	return ((*line == NULL || res < 0) ? -1 : 0);
 }
