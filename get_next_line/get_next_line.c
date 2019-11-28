@@ -6,7 +6,7 @@
 /*   By: jivan-de <jivan-de@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/12 12:29:44 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/27 15:11:56 by jivan-de      ########   odam.nl         */
+/*   Updated: 2019/11/28 17:12:25 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char		*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char		*ft_substr(char const *s, unsigned int start, size_t len)
+char		*ft_substr(char *s, unsigned int start, size_t len, int clean)
 {
 	char	*str;
 	size_t	slen;
@@ -53,6 +53,8 @@ char		*ft_substr(char const *s, unsigned int start, size_t len)
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s + start, len + 1);
+	if (clean)
+		free(s);
 	return (str);
 }
 
@@ -99,7 +101,7 @@ int			get_next_line(int fd, char **line)
 	if (res > 0)
 	{
 		ptr_nl = ft_strchr(fd_store[fd], '\n');
-		*line = ft_substr(fd_store[fd], 0, ptr_nl - fd_store[fd]);
+		*line = ft_substr(fd_store[fd], 0, ptr_nl - fd_store[fd], 1);
 		fd_store[fd] = ft_strdup(ptr_nl + 1);
 		if (*line == NULL)
 			res = ft_read(fd, fd_store, -1);

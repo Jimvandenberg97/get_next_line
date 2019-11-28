@@ -6,42 +6,35 @@
 /*   By: jivan-de <jivan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/15 11:55:55 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/22 14:09:39 by jivan-de      ########   odam.nl         */
+/*   Updated: 2019/11/28 17:34:55 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 #include <stdio.h>
 #include <fcntl.h>
-/*
+
 int		main(int argc, char **argv)
 {
 	int		fd;
-	int		fd1;
 	char	*line;
 	int		status;
 
 	if (argc <= 0)
 		return (0);
-	fd1 = open(argv[2], O_RDONLY);
 	fd = open(argv[1], O_RDONLY);
 	status = 1;
 	while ((status = get_next_line(fd, &line)) > 0)
 	{
 		printf("%s\n", line);
 		free(line);
-		while ((status = get_next_line(fd1, &line)) > 0)
-		{
-			printf("%s\n", line);
-			free(line);
-		}
 	}
 	printf("RETURN VALUE: [%d]  |%s\n", status, line);
 	free(line);
 
 	return (0);
 }
-*/
+
 
 int		main(void)
 {
