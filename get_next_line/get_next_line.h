@@ -6,7 +6,7 @@
 /*   By: jivan-de <jivan-de@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/12 12:30:53 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/28 17:01:04 by jivan-de      ########   odam.nl         */
+/*   Updated: 2019/12/03 11:23:35 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strdup(const char *s1);
-char			*ft_substr(char *s, unsigned int start, size_t len, int clean);
+char			*ft_substr(char *s, unsigned int start, size_t len);
 char			*ft_strchr(const char *s, int c);
 
 #endif

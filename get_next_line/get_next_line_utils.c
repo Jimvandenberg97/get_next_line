@@ -6,7 +6,7 @@
 /*   By: jivan-de <jivan-de@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/12 12:30:33 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/28 16:58:18 by jivan-de      ########   odam.nl         */
+/*   Updated: 2019/12/03 11:11:03 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_strdup(const char *s1)
 	size_t	len;
 	void	*mem;
 
-	if (s1 == NULL)
+	if (!s1)
 		return (ft_strdup(""));
 	len = ft_strlen(s1);
 	mem = (char*)malloc(len + 1);

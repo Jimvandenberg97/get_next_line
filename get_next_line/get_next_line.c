@@ -6,7 +6,7 @@
 /*   By: jivan-de <jivan-de@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/12 12:29:44 by jivan-de      #+#    #+#                 */
-/*   Updated: 2019/11/28 17:12:25 by jivan-de      ########   odam.nl         */
+/*   Updated: 2019/12/03 12:02:09 by jivan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t		ft_strlen(const	char *s)
 
 char		*ft_strchr(const char *s, int c)
 {
-	if (s == NULL)
+	if (!s)
 		return (NULL);
 	while (*s)
 	{
@@ -37,7 +37,7 @@ char		*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char		*ft_substr(char *s, unsigned int start, size_t len, int clean)
+char		*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char	*str;
 	size_t	slen;
@@ -53,8 +53,6 @@ char		*ft_substr(char *s, unsigned int start, size_t len, int clean)
 	if (!str)
 		return (NULL);
 	ft_strlcpy(str, s + start, len + 1);
-	if (clean)
-		free(s);
 	return (str);
 }
 
@@ -79,18 +77,19 @@ static int	ft_read(const int fd, char *fd_store[fd], int x)
 		free(tmp);
 	}
 	free(buf);
-	if ((tmp_res == -1 && fd_store[fd]) || x == -1)
+	if ((tmp_res == -1 && fd_store[fd]) || (x == -1 && fd_store[fd]))
 	{
 		free(fd_store[fd]);
 		fd_store[fd] = NULL;
 	}
-	return (tmp_res);
+	return ((x == -1) ? -1 : tmp_res);
 }
 
 int			get_next_line(int fd, char **line)
 {
 	static char	*fd_store[INT_MAX];
 	char		*ptr_nl;
+	char		*tmp;
 	int			res;
 
 	if (BUFFER_SIZE <= 0 || !line)
@@ -98,20 +97,19 @@ int			get_next_line(int fd, char **line)
 	res = 1;
 	while (!ft_strchr(fd_store[fd], '\n') && res > 0)
 		res = ft_read(fd, fd_store, res);
-	if (res > 0)
+	if (res < 0)
+		return (-1);
+	ptr_nl = ft_strchr(fd_store[fd], '\n');
+	if (ptr_nl != NULL)
 	{
-		ptr_nl = ft_strchr(fd_store[fd], '\n');
-		*line = ft_substr(fd_store[fd], 0, ptr_nl - fd_store[fd], 1);
+		*line = ft_substr(fd_store[fd], 0, ptr_nl - fd_store[fd]);
+		tmp = fd_store[fd];
 		fd_store[fd] = ft_strdup(ptr_nl + 1);
-		if (*line == NULL)
-			res = ft_read(fd, fd_store, -1);
-		return ((*line == NULL || res < 0) ? -1 : 1);
+		free(tmp);
+		return ((*line == NULL || res < 0) ? ft_read(fd, fd_store, -1) : 1);
 	}
-	else if (res == 0)
-	{
-		*line = ft_strdup(fd_store[fd]);
-		free(fd_store[fd]);
-		fd_store[fd] = NULL;
-	}
+	*line = ft_strdup(fd_store[fd]);
+	free(fd_store[fd]);
+	fd_store[fd] = NULL;
 	return ((*line == NULL || res < 0) ? -1 : 0);
 }
